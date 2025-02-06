@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Room</title>
+</head>
+<body>
+<h2>Chat Room</h2>
+<div id="messages"></div>
+<textarea id="message"></textarea><br><br>
+<button id="send">Send</button>
+
+<script>
+  const socket = new WebSocket('ws://localhost:5000'); // Adjust this URL based on your WebSocket server
+
+  document.getElementById('send').onclick = function() {
+    const message = document.getElementById('message').value;
+    socket.send(message);
+    document.getElementById('message').value = '';
+  };
+
+  socket.onmessage = function(event) {
+    const messageDiv = document.createElement('div');
+    messageDiv.innerText = event.data;
+    document.getElementById('messages').appendChild(messageDiv);
+  };
+</script>
+</body>
+</html>
